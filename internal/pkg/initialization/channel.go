@@ -20,6 +20,9 @@ const TypSource = "source"
 
 func ChannelMap(cfg *configs.Config, logger *log.Logger) map[string]channels.IChannel {
 	sourceChain := vrfService(cfg, logger)
+	// 注册 admin Provider
+	// todo
+	registerAdminProvider(sourceChain, logger)
 	return channelMap(cfg, sourceChain, logger)
 }
 
@@ -27,7 +30,11 @@ func channelMap(cfg *configs.Config, sourceChain repostitory.IChain, logger *log
 
 	// init source chain channel
 	sourceChannel := channel(cfg, sourceChain, TypSource, logger)
-
+	sourceChannel = channels.NewWriterMW(
+		sourceChannel, sourceChain.ServiceName(), logger,
+		tools.DefaultHomePath, tools.DefaultCacheDirName,
+		cfg.ContractServices.VRF.Cache.Filename,
+	)
 	channelMap := map[string]channels.IChannel{}
 	if !cfg.ContractServices.VRF.Enabled {
 		logger.Fatal("channel_types should be equal 1")
@@ -81,4 +88,29 @@ func channel(cfg *configs.Config, sourceChain repostitory.IChain, typ string, lo
 	}
 
 	return channel
+}
+
+func registerAdminProvider(chain repostitory.IChain, logger *log.Logger) {
+	logger.Info("regsiter admin provider")
+	found, err := chain.GetProvider(chain.AdminKeyProvider())
+	if err != nil {
+		logger.Fatal(err)
+	}
+	if found {
+		return
+	}
+	resultHash, err := chain.RegisterProvingKey(chain.AdminKeyProvider())
+	if err != nil {
+		logger.Fatal(err)
+	}
+	for {
+		txStatus, err := chain.GetResult(resultHash)
+		if err == nil {
+			if txStatus == 1 {
+				logger.Fatal(" admin provider register success ")
+				break
+			}
+			logger.Fatal(" status == 0, register error")
+		}
+	}
 }

@@ -7,7 +7,7 @@ import (
 )
 
 func TestCacheFileWriter_Write(t *testing.T) {
-	cfgDirName := ".tibc-relayer"
+	cfgDirName := ".vrf-provider"
 	userDir, _ := os.UserHomeDir()
 	homeDir := filepath.Join(userDir, cfgDirName)
 	dir := "cache"

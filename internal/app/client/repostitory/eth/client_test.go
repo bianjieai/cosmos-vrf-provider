@@ -3,6 +3,10 @@ package eth
 import (
 	"testing"
 
+	"gitlab.bianjie.ai/avata/contracts/vrf-provider/chainlink/core/services/signatures/secp256k1"
+
+	"github.com/ethereum/go-ethereum/common"
+
 	"gitlab.bianjie.ai/avata/contracts/vrf-provider/internal/app/client/repostitory/eth/contracts"
 
 	"gitlab.bianjie.ai/avata/contracts/vrf-provider/chainlink/core/services/vrf/proof"
@@ -19,7 +23,7 @@ const (
 	host       = "http://testnet.bianjie.ai:8545"
 	optPrivKey = "3f2ca07c1f351caed872317dba6693ef917393121331fefdfa56012e1cbb1e5c"
 
-	VRFCoordinatorAddr = "0xBeA58F331510Bbf99478D909c970D802ceACCD7D"
+	VRFCoordinatorAddr = "0xc632Fcba486e341Db8599bb7C07741f8a4f245Ae"
 	VRFTopic           = "RandomWordsRequested(bytes32,uint256,uint256,uint64,uint16,uint32,uint32,address)"
 
 	subId = 1
@@ -37,6 +41,7 @@ func TestEthClient(t *testing.T) {
 	contractBindOptsCfg.ChainID = chainID
 	contractBindOptsCfg.VRFPrivKey = optPrivKey
 	contractBindOptsCfg.GasLimit = 2000000
+	contractBindOptsCfg.MaxGasPrice = 1
 
 	chainCfg := NewChainConfig()
 	chainCfg.ContractCfgGroup = contractCfgGroup
@@ -72,15 +77,16 @@ func TestEthClient(t *testing.T) {
 	require.NoError(t, err)
 	t.Log(p)
 
-	////注册 privider
-	//result1, err := ethClient.contracts.VRF.RegisterProvingKey(
-	//	ethClient.bindOpts.vrfOpts,
-	//	ethClient.pair(secp256k1.Coordinates(p)),
-	//)
-	//if err != nil {
-	//	t.Fatal(err)
-	//}
-	//t.Log(result1.Hash().String())
+	//注册 privider
+	result1, err := ethClient.contracts.VRF.RegisterProvingKey(
+		ethClient.bindOpts.vrfOpts,
+		ethClient.pair(secp256k1.Coordinates(p)),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(result1.Hash().String())
+	return
 
 	_, _, providers, err := ethClient.contracts.VRF.GetRequestConfig(nil)
 	if err != nil {
@@ -122,18 +128,17 @@ func TestEthClient(t *testing.T) {
 	events, err := ethClient.GetRandomWordsRequestedEvent(10629868)
 	require.NoError(t, err)
 
-	t.Log(events)
-
 	requestLog := events[0]
 
 	preSeed, err := proof.BigToSeed(requestLog.PreSeed)
 	require.NoError(t, err)
+	//requestLog.Raw.BlockHash
 
 	proofResponse, rc, err := proof.GenerateProofResponseV2(
 		kMaster.VRF(), myVrfkey.ID(),
 		proof.PreSeedDataV2{
 			PreSeed:          preSeed,
-			BlockHash:        requestLog.Raw.BlockHash,
+			BlockHash:        common.HexToHash("0x"),
 			BlockNum:         requestLog.Raw.BlockNumber,
 			SubId:            requestLog.SubId,
 			CallbackGasLimit: requestLog.CallbackGasLimit,
@@ -141,6 +146,7 @@ func TestEthClient(t *testing.T) {
 			Sender:           requestLog.Sender,
 		})
 	require.NoError(t, err)
+
 	proofParam := contracts.VRFProof{
 		Pk:            proofResponse.Pk,
 		Gamma:         proofResponse.Gamma,

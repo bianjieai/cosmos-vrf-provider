@@ -45,7 +45,7 @@ func newBindOpts(cfg *ContractBindOptsCfg) (*bindOpts, error) {
 		return nil, err
 	}
 	vrfOpts.GasLimit = cfg.GasLimit
-	vrfOpts.GasPrice = new(big.Int).SetUint64(1)
+	vrfOpts.GasPrice = new(big.Int).SetUint64(cfg.MaxGasPrice)
 
 	return &bindOpts{
 		vrfOpts: vrfOpts,
