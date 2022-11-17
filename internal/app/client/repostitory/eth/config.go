@@ -8,7 +8,6 @@ type ChainConfig struct {
 	ChainURI string
 	ChainID  uint64
 
-	Slot           int64
 	TipCoefficient float64
 
 	ContractCfgGroup    *ContractCfgGroup
@@ -20,7 +19,7 @@ func NewContractCfgGroup() *ContractCfgGroup {
 }
 
 type ContractCfgGroup struct {
-	Erc1155Bank ContractCfg
+	VRF ContractCfg
 }
 
 type ContractCfg struct {
@@ -34,8 +33,8 @@ func NewContractBindOptsCfg() *ContractBindOptsCfg {
 }
 
 type ContractBindOptsCfg struct {
-	CountPrivKey string
-	GasLimit     uint64
-	MaxGasPrice  uint64
-	ChainID      uint64
+	VRFPrivKey  string
+	GasLimit    uint64
+	MaxGasPrice uint64
+	ChainID     uint64
 }

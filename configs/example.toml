@@ -1,0 +1,30 @@
+[app]
+
+env = "dev"
+log_level = "debug"
+
+[chain]
+chain_id = 12231
+chain_name = "eth"
+update_client_frequency = 2
+uri = "http://testnet.bianjie.ai:8545"
+gas_limit = 2000000
+max_gas_price = 1
+
+[contract_services]
+[contract_services.vrf]
+enabled = true
+service_name = "vrf"
+
+[contract_services.vrf.cache]
+filename = "vrf.json"
+start_height = 10641936
+
+
+[contract_services.vrf.contract]
+addr = "0xc632Fcba486e341Db8599bb7C07741f8a4f245Ae"
+topic = "RandomWordsRequested(bytes32,uint256,uint256,uint64,uint16,uint32,uint32,address)"
+opt_priv_key = "3f2ca07c1f351caed872317dba6693ef917393121331fefdfa56012e1cbb1e5c"
+
+
+
