@@ -1,0 +1,32 @@
+[app]
+
+env = "dev"
+log_level = "debug"
+
+[chain]
+chain_id = 3
+chain_name = "eth"
+update_client_frequency = 2
+uri = "http://127.0.0.1:8545"
+gas_limit = 2000000
+max_gas_price = 150000000000
+comment_slot = 104
+tip_coefficient = 0.2
+
+[contract_services]
+[contract_services.vrf]
+enabled = true
+service_name = "vrf"
+
+[contract_services.vrf.cache]
+filename = "vrf.json"
+start_height = 4
+
+
+[contract_services.vrf.contract]
+addr = "addr_test"
+topic = "topic_test"
+opt_priv_key = "opt_priv_key_test"
+
+
+
