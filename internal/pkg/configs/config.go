@@ -20,11 +20,11 @@ type (
 	}
 	// Eth config============================================================
 	Eth struct {
-		URI            string  `mapstructure:"uri"`
-		ChainID        uint64  `mapstructure:"chain_id"`
-		GasLimit       uint64  `mapstructure:"gas_limit"`
-		MaxGasPrice    uint64  `mapstructure:"max_gas_price"`
-		TipCoefficient float64 `mapstructure:"tip_coefficient"`
+		URI         string `mapstructure:"uri"`
+		ChainID     uint64 `mapstructure:"chain_id"`
+		GasLimit    uint64 `mapstructure:"gas_limit"`
+		MaxGasPrice uint64 `mapstructure:"max_gas_price"`
+		VrfAdminKey string `mapstructure:"vrf_admin_key"`
 	}
 
 	ContractCfg struct {

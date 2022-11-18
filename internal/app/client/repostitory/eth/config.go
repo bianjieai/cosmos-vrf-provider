@@ -8,7 +8,7 @@ type ChainConfig struct {
 	ChainURI string
 	ChainID  uint64
 
-	TipCoefficient float64
+	VrfAdminKey string
 
 	ContractCfgGroup    *ContractCfgGroup
 	ContractBindOptsCfg *ContractBindOptsCfg

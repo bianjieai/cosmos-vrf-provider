@@ -34,8 +34,7 @@ func vrfService(cfg *configs.Config, logger *log.Logger) repostitory.IChain {
 
 	ethChainCfg.ChainID = cfg.Eth.ChainID
 	ethChainCfg.ChainURI = cfg.Eth.URI
-
-	ethChainCfg.TipCoefficient = cfg.Eth.TipCoefficient
+	ethChainCfg.VrfAdminKey = cfg.Eth.VrfAdminKey
 
 	ethRepo, err := repoeth.NewEth(ethChainCfg)
 	if err != nil {

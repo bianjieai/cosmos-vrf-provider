@@ -88,6 +88,7 @@ func (channel *Channel) relay() error {
 			logger.Info("failed to store block hash")
 			return typeserr.ErrStoreBlockHash
 		}
+		logger.WithField("storeBlockHashResultHash", storeBlockHashResultHash).Info()
 		if err := channel.reTryEthResult(storeBlockHashResultHash, 0); err != nil {
 			logger.WithField("err_msg", err).Error("failed to StoreBlockHash: retry: ", err)
 			return err
@@ -98,6 +99,7 @@ func (channel *Channel) relay() error {
 			logger.Info("failed to get random words requested event")
 			return typeserr.ErrFulfillRandomWords
 		}
+		logger.WithField("fulfillRandomWordsResultHash", fulfillRandomWordsResultHash).Info()
 		if err := channel.reTryEthResult(fulfillRandomWordsResultHash, 0); err != nil {
 			logger.WithField("err_msg", err).Error("failed to FulfillRandomWords : retry: ", err)
 			return err

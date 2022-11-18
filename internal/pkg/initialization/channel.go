@@ -107,7 +107,7 @@ func registerAdminProvider(chain repostitory.IChain, logger *log.Logger) {
 		txStatus, err := chain.GetResult(resultHash)
 		if err == nil {
 			if txStatus == 1 {
-				logger.Fatal(" admin provider register success ")
+				logger.Info(" admin provider register success ")
 				break
 			}
 			logger.Fatal(" status == 0, register error")
