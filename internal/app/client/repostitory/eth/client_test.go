@@ -43,11 +43,13 @@ func TestEthClient(t *testing.T) {
 	contractBindOptsCfg.GasLimit = 2000000
 	contractBindOptsCfg.MaxGasPrice = 1
 
+	pk := `{"PublicKey":"0x68e8b817b819e35cbd871ce33d8754f72347a1e44225bd5427ddcb87a44bf0ea00","vrf_key":{"address":"411efb75b302bdc8fdea29bd106eb34124e6c738","crypto":{"cipher":"aes-128-ctr","ciphertext":"1b9d18bc3142ab3eae54dd2facb6620a235fe3a64c9eb227738774a02078e848","cipherparams":{"iv":"c11da367f8794c0d5e8113b8fd5ceb2d"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"0dfb59f91b1161e4ab1e5fc80b0c21fe3df510e894263f1ad655369c763ed809"},"mac":"55ae66c3426cbf1cc2191c8481f8e49b97f7c3f794a813e06c94eefe31e4bbbf"},"version":3}}`
 	chainCfg := NewChainConfig()
 	chainCfg.ContractCfgGroup = contractCfgGroup
 	chainCfg.ContractBindOptsCfg = contractBindOptsCfg
 	chainCfg.ChainURI = host
 	chainCfg.ChainID = chainID
+	chainCfg.VrfAdminKey = pk
 
 	ethClient, err := NewEth(chainCfg)
 	if err != nil {
@@ -65,7 +67,6 @@ func TestEthClient(t *testing.T) {
 	}
 	t.Log(vrfCfg)
 
-	pk := `{"PublicKey":"0x68e8b817b819e35cbd871ce33d8754f72347a1e44225bd5427ddcb87a44bf0ea00","vrf_key":{"address":"411efb75b302bdc8fdea29bd106eb34124e6c738","crypto":{"cipher":"aes-128-ctr","ciphertext":"1b9d18bc3142ab3eae54dd2facb6620a235fe3a64c9eb227738774a02078e848","cipherparams":{"iv":"c11da367f8794c0d5e8113b8fd5ceb2d"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"0dfb59f91b1161e4ab1e5fc80b0c21fe3df510e894263f1ad655369c763ed809"},"mac":"55ae66c3426cbf1cc2191c8481f8e49b97f7c3f794a813e06c94eefe31e4bbbf"},"version":3}}`
 	kMaster := keystore.New()
 	myVrfkey, err := kMaster.VRF().Import([]byte(pk), "12345678")
 	if err != nil {
@@ -86,7 +87,6 @@ func TestEthClient(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Log(result1.Hash().String())
-	return
 
 	_, _, providers, err := ethClient.contracts.VRF.GetRequestConfig(nil)
 	if err != nil {

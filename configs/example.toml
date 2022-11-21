@@ -6,7 +6,6 @@ log_level = "debug"
 [chain]
 chain_id = 12231
 chain_name = "eth"
-update_client_frequency = 2
 uri = "http://testnet.bianjie.ai:8545"
 gas_limit = 2000000
 max_gas_price = 1
