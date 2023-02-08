@@ -1,5 +1,9 @@
 # vrf-provider
 
+VRF Provider Application for Cosmos Enterprise.
+
+Requires: [cosmos-vrf](https://github.com/bianjieai/cosmos-vrf)
+
 ## 配置
 
 配置请参考 `configs/example.toml`
