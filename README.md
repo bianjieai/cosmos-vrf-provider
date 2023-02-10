@@ -1,4 +1,4 @@
-# vrf-provider
+# Cosmos VRF Provider
 
 VRF Provider Application for Cosmos Enterprise.
 
